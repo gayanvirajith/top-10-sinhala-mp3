@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top 10 sinhala mp3</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+  </head>
+  <body ng-app="top10">
+    <!--[if lt IE 10]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- ======================= NEW DESIGN ================================================================== -->
+    <!--
+            BEGIN: App-Loading Screen.
+            --
+            Until the AngularJS application code is loaded and bootstrapped, this is just
+            "static HTML." Meaning, the [class-based] directive, "mAppLoading", won't
+            actually do anything until the application is initialized. As such, we'll give
+            it just enough CSS to "fail open"; then, when the AngularJS app loads, the
+            directive will run and we'll remove this loading screen.
+            NOTES ON ANIMATION:
+            When the AngularJS application is loaded and starts bootstrapping, all
+            animations are disabled until all the routing information and templating
+            information is loaded AND at least two digests have run (in order to prevent
+            a flurry of animation activity). As such, we can't animate the root of the
+            directive. Instead, we have to add "ngAnimateChildren" to the root element
+            and then animate the inner container. The "ngAnimateChildren" directive allows
+            us to override the animation-blocking within the bounds of our directive, which
+            is fine since it only runs once.
+        -->
+    <div class="m-app-loading" ng-animate-children>
+
+        <!--
+            HACKY CODE WARNING: I'm putting Style block inside directive so that it
+            will be removed from the DOM when we remove the directive container.
+        -->
+        <style type="text/css">
+            div.m-app-loading {
+                position: fixed;
+            }
+
+            div.m-app-loading div.animated-container {
+                background-color: #f6f6f6;
+                bottom: 0px;
+                left: 0px;
+                opacity: 1.0;
+                position: fixed;
+                right: 0px;
+                top: 0px;
+                z-index: 999999;
+            }
+
+            /* Used to initialize the ng-leave animation state. */
+            div.m-app-loading div.animated-container.ng-leave {
+                opacity: 1.0;
+                transition: all linear 200ms;
+                -webkit-transition: all linear 200ms;
+            }
+
+            /* Used to set the end properties of the ng-leave animation state. */
+            div.m-app-loading div.animated-container.ng-leave-active {
+                opacity: 0;
+            }
+
+            div.m-app-loading div.messaging {
+                color: #333333;
+                font-family: monospace;
+                left: 0px;
+                margin-top: -37px;
+                position: absolute;
+                right: 0px;
+                text-align: center;
+                top: 50%;
+            }
+
+            div.m-app-loading h1 {
+                font-size: 26px;
+                line-height: 35px;
+                margin: 0px 0px 20px 0px;
+            }
+
+            div.m-app-loading p {
+                font-size: 18px;
+                line-height: 14px;
+                margin: 0px 0px 0px 0px;
+            }
+
+            div.m-app-loading img {
+                margin: 0 auto;
+                width: 50px;
+                height: 30px;
+            }
+        </style>
+
+
+        <!-- BEGIN: Actual animated container. -->
+        <div class="animated-container">
+
+            <div class="messaging">
+
+                <!-- <img src="/images/icons/three-dots.svg" alt=""> -->
+                Loading
+            </div>
+
+        </div>
+        <!-- END: Actual animated container. -->
+
+    </div>
+    <div class="hero-unit" ng-controller="MainCtrl" ng-cloak>
+      <!-- init soundManager2 player -->
+      <sound-manager></sound-manager>
+      <div class="header">
+        <div class="header-top-switches" layout="row"  layout-align="start center">
+          <div class="logo" flex="nogrow">
+            Top 10 Sinhala mp3
+          </div>
+          <div class="volume-control" layout="row" flex="nogrow" layout-align="center center">
+            <div class="vol-left-control" flex="nogrow">
+              <md-button music-volume data-type="decrease" class="md-icon-button" aria-label="Volume down">
+                <md-icon md-svg-icon="images/ic_volume_down_black_24px.svg" style="color:#fff"></md-icon>
+              </md-button>
+            </div>
+            <div class="vol-middle-control seekBase" flex>
+                  <div class="seekLoad" ng-style="{width : ( volume + '%' ) }"></div>
+            </div>
+            <div class="vol-right-control" flex="nogrow">
+              <md-button music-volume data-type="increase" class="md-icon-button" aria-label="Volume up">
+                <md-icon md-svg-icon="images/ic_volume_up_black_24px.svg" style="color:#fff"></md-icon>
+              </md-button>
+            </div>
+          </div>
+          <md-button play-all="songs" class="md-icon-button switch-on-btn" ng-click="onHide=true;"  flex="nogrow" aria-label="Switch on">
+            <md-icon md-svg-icon="images/ic_power_settings_new_black_24px.svg" style="color:#fff"></md-icon>
+          </md-button>
+        </div>
+
+        <div class="header-playback-meta">
+          <div ng-show="isBuffering" class="buffering-mp3">
+              <md-progress-circular class="md-accent md-hue-2" style="margin: 12px auto 0 auto;" md-diameter="40"></md-progress-circular>
+          </div>
+          <p>
+              {{ currentPlaying.title }} &nbsp; {{ currentPlaying.artist }}
+          </p>
+
+          <div class="seekBase" seek-track>
+              <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
+          </div>
+          <div class="seek-time-meta">
+            <span class="time-meta-left">{{ currentPostion }}</span>
+            <span class="time-meta-right">{{ currentDuration }}</span>
+          </div>
+        </div>
+
+        {{trackProgress}}
+
+        <div class="play-options" layout="row"  layout-align="center center">
+          <md-button prev-track class="md-icon-button switch-on-btn" flex="nogrow" aria-label="Switch on">
+            <md-icon md-svg-icon="images/previous-track.svg" style="color:#fff"></md-icon>
+          </md-button>
+            <md-button play-all="songs" ng-show="!isPlaying && !onHide" ng-hide="onHide" ng-click="onHide=true;" class="md-icon-button switch-on-btn" flex="nogrow" aria-label="Play/Pause">
+              <md-icon ng-show="!isPlaying" md-svg-icon="images/play-arrow.svg" style="color:#fff"></md-icon>
+            </md-button>
+          <md-button ng-show="onHide" ng-click="togglePlayMusic()" class="md-icon-button switch-on-btn" flex="nogrow" aria-label="Play/Pause">
+            <md-icon ng-show="isPlaying" md-svg-icon="images/pause-button.svg" style="color:#fff"></md-icon>
+            <md-icon ng-show="!isPlaying" md-svg-icon="images/play-arrow.svg" style="color:#fff"></md-icon>
+          </md-button>
+          <md-button next-track class="md-icon-button switch-on-btn" flex="nogrow" aria-label="Switch on">
+            <md-icon md-svg-icon="images/play-next-button.svg" style="color:#fff"></md-icon>
+          </md-button>
+
+        </div>
+      </div>
+      <div class="">
+        <div class="tracks-header">
+          Tracks
+        </div>
+        <ul class="playlist">
+            <li ng-repeat="song in playlist">
+                <a play-from-playlist="song" ng-class="{'active': currentPlaying.id == song.id}">{{ song.title }} - {{ song.artist }}</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-soundmanager2/dist/angular-soundmanager2.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/mAppLoading.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
