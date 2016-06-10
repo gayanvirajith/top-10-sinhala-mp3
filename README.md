@@ -1,6 +1,12 @@
 #Angular Mp3 Player Demo
 
-Sample angular project that uses [angular-soundmanager2](http://perminder-klair.github.io/angular-soundmanager2/). For the demo it uses top 10 sinhala mp3 songs from [ananmanan.lk](http://ananmanan.lk).
+Sample angular project that uses [angular-soundmanager2](http://perminder-klair.github.io/angular-soundmanager2/). For the demo it uses top 10 sinhala mp3 songs from [ananmanan.lk](http://ananmanan.lk)
+
+## Demo
+
+Please take a look at `gh-pages` branch in order to see build version of the source.
+
+[Live demo](http://gayan.me/top-10-sinhala-mp3/)
 
 ### How to install
 
