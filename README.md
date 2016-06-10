@@ -1,4 +1,4 @@
-Angular Top 10 Sinhala Mp3 Player
+#Angular Top 10 Sinhala Mp3 Player
 
 Sample angular project that uses [angular-soundmanager2](http://perminder-klair.github.io/angular-soundmanager2/)
 
