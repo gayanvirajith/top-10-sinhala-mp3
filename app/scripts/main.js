@@ -90,7 +90,7 @@
           });
         };
 
-        // initPlayList();
+        initPlayList();
         $scope.isPlaying = false;
 
         $scope.$on('music:isPlaying', function(event, data) {
